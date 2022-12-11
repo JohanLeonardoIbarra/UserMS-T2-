@@ -1,0 +1,16 @@
+.eslintrc
+.eslintignore
+
+.git
+.gitignore
+.github
+
+node_modules
+dist/*
+
+*.md
+LICENSE
+
+jest.config.ts
+nodemon.json
+*.log
