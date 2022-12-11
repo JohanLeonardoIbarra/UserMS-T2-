@@ -2,14 +2,15 @@ import { Request, Response } from 'express';
 import AppDataSource from '../index';
 import { Order } from '../Entity/Order';
 import { Points } from 'Webhook/Points';
+import { Delivery } from '../Webhook/Delivery';
 
-const orderRepository = AppDataSource.getRepository(Order);
 export class OrderController {
-  createOrder(req: Request, res: Response) {
+  async createOrder(req: Request, res: Response) {
     const { user, product, unitPrice, quantity } = req.body;
 
-    const order = new Order();
+    const orderRepository = AppDataSource.getRepository(Order);
 
+    const order = new Order();
     order.user = user;
     order.product = product;
     order.quantity = quantity;
@@ -18,7 +19,12 @@ export class OrderController {
     orderRepository.save(order);
 
     Points.addPoints(user);
+    const deliverMessage = await Delivery.createRequest(
+      user,
+      product,
+      quantity
+    );
 
-    res.send({ success: true });
+    res.send(deliverMessage);
   }
 }

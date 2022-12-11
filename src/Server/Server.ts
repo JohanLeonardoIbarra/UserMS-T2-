@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import UserRouter from 'Router/User';
+import orderRouter from '../Router/Order';
 
 export class Server {
   private app = express();
@@ -21,6 +22,7 @@ export class Server {
 
   private routes(): void {
     this.app.use('/user', UserRouter);
+    this.app.use('/order', orderRouter);
   }
 
   private listen(): void {
